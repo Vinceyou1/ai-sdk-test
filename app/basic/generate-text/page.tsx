@@ -1,30 +1,15 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { CoreMessage } from "ai";
 import { useState } from "react";
 import { ArrowBendRightUpIcon } from "@phosphor-icons/react";
-import Markdown from "markdown-to-jsx";
+import { MessageList } from "@/components/message-list";
 
 export default function GenerateText() {
   const [messages, setMessages] = useState<CoreMessage[]>([]);
   return (
     <div className="text-gray-400 flex-grow flex flex-col items-center justify-between">
-      <div className="flex flex-col w-1/2 p-4 gap-4">
-        {messages.map((message, index) => {
-          return (
-            <div
-              key={"message" + index}
-              className={cn(
-                "rounded-lg border-2 border-gray-800 p-4",
-                message.role == "user" ? "ml-8 rounded-br-none" : "mr-8 rounded-bl-none"
-              )}
-            >
-              <Markdown>{message.content as string}</Markdown>
-            </div>
-          );
-        })}
-      </div>
+      <MessageList messages={messages} />
       <div className="w-1/2 flex flex-row items-center gap-4">
         <textarea
           id="user-input"
@@ -33,20 +18,20 @@ export default function GenerateText() {
         />
         <button
           onClick={async () => {
-            let tempMessages = messages;
+            let messagesCopy = [...messages];
             const textarea = document.getElementById(
               "user-input"
             ) as HTMLTextAreaElement;
             const content = textarea.value;
             if (!content || content == "") return;
-            textarea.value = ""
-            let userMessage: CoreMessage = {
+            textarea.value = "";
+            const userMessage: CoreMessage = {
               role: "user",
               content: content,
             };
-            tempMessages.push(userMessage);
-            setMessages(tempMessages);
-            await fetch("/api/generate-text", {
+            messagesCopy.push(userMessage);
+            setMessages([...messagesCopy]);
+            await fetch("/api/basic/generate-text", {
               method: "POST",
               body: content,
             }).then(async (response) => {
@@ -62,7 +47,7 @@ export default function GenerateText() {
                   role: "assistant",
                   content: aiContent,
                 };
-                setMessages([...messages, aiResponse]);
+                setMessages([...messagesCopy, aiResponse]);
               }
             });
           }}

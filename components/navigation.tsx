@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -9,6 +9,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 function ListItem({
   title,
@@ -27,70 +28,42 @@ function ListItem({
         </Link>
       </NavigationMenuLink>
     </li>
-  )
+  );
 }
 
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-]
-
-
 export default function Navigation() {
+  const pathName = usePathname();
   return (
-    <NavigationMenu
-      className="flex-0"
-      viewport={false}
-    >
+    <NavigationMenu className="flex-0" viewport={false}>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Basic Text Generation</NavigationMenuTrigger>
+          <NavigationMenuTrigger className={pathName.includes("/basic/") ? "bg-accent/50 text-accent-foreground": ""}>Basic Functionality</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-2 md:w-[400px] grid-cols-2">
-              <ListItem href="/generate-text" title="Generate Text">
+              <ListItem href="/basic/generate-text" title="Generate Text">
                 Generate text using AI models.
               </ListItem>
-              <ListItem href="/stream-text" title="Stream Text">
+              <ListItem href="/basic/stream-text" title="Stream Text">
                 Stream AI-generated text.
               </ListItem>
-              <ListItem href="/system-prompts" title="System Prompts">
+              <ListItem href="/basic/chat-with-history" title="Chat with History">
+                Have a conversation with a model.
+              </ListItem>
+              <ListItem href="/basic/system-prompt" title="System Prompts">
                 Manage and use system prompts.
               </ListItem>
-              <ListItem href="/chat-history" title="Chat History">
-								Have a conversation with a model.
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger className={pathName.includes("/structured/") ? "bg-accent/50 text-accent-foreground": ""}>Structured Output</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-2 md:w-[400px] grid-cols-2">
+              <ListItem href="/structured/generate-object" title="Generate Object">
+                Generate structured objects according to a schema.
+              </ListItem>
+              <ListItem href="/structured/stream-object" title="Stream Object">
+                Stream AI-generated objects.
               </ListItem>
             </ul>
           </NavigationMenuContent>
