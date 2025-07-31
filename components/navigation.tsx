@@ -8,6 +8,8 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
+import { List } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -35,9 +37,28 @@ export default function Navigation() {
   const pathName = usePathname();
   return (
     <NavigationMenu className="flex-0" viewport={false}>
-      <NavigationMenuList>
+      <NavigationMenuList className="gap-4">
         <NavigationMenuItem>
-          <NavigationMenuTrigger className={pathName.includes("/basic/") ? "bg-accent/50 text-accent-foreground": ""}>Basic Functionality</NavigationMenuTrigger>
+          <NavigationMenuLink
+            asChild
+            className={cn(
+              navigationMenuTriggerStyle(),
+              pathName === "/" ? "bg-accent/50 text-accent-foreground" : ""
+            )}
+          >
+            <Link href="/">Home</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger
+            className={
+              pathName.includes("/basic/")
+                ? "bg-accent/50 text-accent-foreground"
+                : ""
+            }
+          >
+            Basic Functionality
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-2 md:w-[400px] grid-cols-2">
               <ListItem href="/basic/generate-text" title="Generate Text">
@@ -46,7 +67,10 @@ export default function Navigation() {
               <ListItem href="/basic/stream-text" title="Stream Text">
                 Stream AI-generated text.
               </ListItem>
-              <ListItem href="/basic/chat-with-history" title="Chat with History">
+              <ListItem
+                href="/basic/chat-with-history"
+                title="Chat with History"
+              >
                 Have a conversation with a model.
               </ListItem>
               <ListItem href="/basic/system-prompt" title="System Prompts">
@@ -56,14 +80,25 @@ export default function Navigation() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className={pathName.includes("/structured/") ? "bg-accent/50 text-accent-foreground": ""}>Structured Output</NavigationMenuTrigger>
+          <NavigationMenuTrigger
+            className={
+              pathName.includes("/structured/")
+                ? "bg-accent/50 text-accent-foreground"
+                : ""
+            }
+          >
+            Structured Output
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-2 md:w-[400px] grid-cols-2">
-              <ListItem href="/structured/generate-object" title="Generate Object">
-                Generate structured objects according to a schema.
-              </ListItem>
+            <ul className="grid gap-2 md:w-[300px]">
               <ListItem href="/structured/stream-object" title="Stream Object">
-                Stream AI-generated objects.
+                Generate a recipe according to a schema.
+              </ListItem>
+              <ListItem
+                href="/structured/sentiment-analysis"
+                title="Sentiment Analysis"
+              >
+                Analyze the sentiment of a given text.
               </ListItem>
             </ul>
           </NavigationMenuContent>
