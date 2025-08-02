@@ -9,7 +9,6 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { List } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -99,6 +98,30 @@ export default function Navigation() {
                 title="Sentiment Analysis"
               >
                 Analyze the sentiment of a given text.
+              </ListItem>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger
+            className={
+              pathName.includes("/file/")
+                ? "bg-accent/50 text-accent-foreground"
+                : ""
+            }
+          >
+            File Processing
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-2 md:w-[300px]">
+              <ListItem href="/file/describe-image" title="Describe Image">
+                Describe the content of an image.
+              </ListItem>
+              <ListItem
+                href="/file/query-pdf"
+                title="Query PDF"
+              >
+                Get experiences from a PDF resume.
               </ListItem>
             </ul>
           </NavigationMenuContent>

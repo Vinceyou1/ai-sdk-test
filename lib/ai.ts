@@ -1,4 +1,11 @@
-import { CoreMessage, generateObject, generateText, streamObject, streamText } from "ai";
+import {
+  CoreMessage,
+  generateObject,
+  generateText,
+  ImagePart,
+  streamObject,
+  streamText,
+} from "ai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { z } from "zod";
 
@@ -85,4 +92,52 @@ export async function sentimentAnalysis(prompt: string) {
   });
 
   return output;
+}
+
+export function describeImage(data: string) {
+  const { textStream } = streamText({
+    model,
+    messages: [
+      {
+        role: "system",
+        content: "You are a helpful assistant that describes images. Please provide an answer no more than 2-3 sentences long.",
+      },
+      {
+        role: "user",
+        content: [
+          {
+            type: "image",
+            image: data, // Assuming 'data' is a base64 encoded string of the image
+          },
+        ],
+      },
+    ],
+  });
+
+  return textStream;
+}
+
+export function queryPDF(prompt: string, attachment: string, attachmentName: string) {
+  const { textStream } = streamText({
+    model,
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: prompt,
+          },
+          {
+            type: "file",
+            data: attachment, // Assuming 'attachment' is a base64 encoded string of the image
+            filename: "document.pdf",
+            mimeType: "application/pdf",
+          },
+        ],
+      },
+    ],
+  });
+
+  return textStream;
 }
