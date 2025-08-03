@@ -121,10 +121,21 @@ export default function Navigation() {
                 href="/file/query-pdf"
                 title="Query PDF"
               >
-                Get experiences from a PDF resume.
+                Ask anything about a PDF document.
               </ListItem>
             </ul>
           </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            asChild
+            className={cn(
+              navigationMenuTriggerStyle(),
+              pathName === "/" ? "bg-accent/50 text-accent-foreground" : ""
+            )}
+          >
+            <Link href="/tool-calling">Tool Calling</Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
