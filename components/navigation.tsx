@@ -131,7 +131,7 @@ export default function Navigation() {
             asChild
             className={cn(
               navigationMenuTriggerStyle(),
-              pathName === "/" ? "bg-accent/50 text-accent-foreground" : ""
+              pathName === "/tool-calling" ? "bg-accent/50 text-accent-foreground" : ""
             )}
           >
             <Link href="/tool-calling">Tool Calling</Link>
