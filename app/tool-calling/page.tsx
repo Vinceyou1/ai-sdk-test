@@ -4,7 +4,6 @@ import { ArrowBendRightUpIcon } from "@phosphor-icons/react";
 import Markdown from "markdown-to-jsx";
 import { cn } from "@/lib/utils";
 import { useChat } from "@ai-sdk/react";
-import { ToolInvocation } from "@ai-sdk/ui-utils";
 import { Weather } from "@/components/weather";
 import { DefaultChatTransport } from "ai";
 
@@ -27,7 +26,7 @@ export default function ToolCalling() {
                 message.role == "assistant" && "mr-8 rounded-bl-none"
               )}
             >
-              {message.parts.map((part, partIndex) => {
+              {message.parts.map((part) => {
                 if (part.type !== "tool-getCurrentWeather") return null;
                 if (part.state == "output-available") {
                   const result = part.output as {
