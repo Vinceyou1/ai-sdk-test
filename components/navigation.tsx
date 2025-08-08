@@ -72,7 +72,7 @@ export default function Navigation() {
               >
                 Have a conversation with a model.
               </ListItem>
-              <ListItem href="/basic/system-prompt" title="System Prompts">
+              <ListItem href="/basic/system-prompts" title="System Prompts">
                 Manage and use system prompts.
               </ListItem>
             </ul>

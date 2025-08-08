@@ -2,11 +2,12 @@ import {
   CoreMessage,
   generateObject,
   generateText,
-  Message,
+  UIMessage,
   smoothStream,
   streamObject,
   streamText,
-  tool,
+  convertToModelMessages,
+  stepCountIs,
 } from "ai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { z } from "zod";
@@ -29,6 +30,7 @@ export function callStreamText(prompt: string) {
   const { textStream } = streamText({
     model: model,
     prompt: prompt,
+    experimental_transform: smoothStream(),
   });
 
   return textStream;
@@ -38,6 +40,7 @@ export function callStreamTextWithHistory(messages: CoreMessage[]) {
   const { textStream } = streamText({
     model: model,
     messages: messages,
+    experimental_transform: smoothStream(),
   });
 
   return textStream;
@@ -51,6 +54,7 @@ export function callStreamTextWithSystemPrompt(
     model: model,
     prompt: prompt,
     system: systemPrompt,
+    experimental_transform: smoothStream(),
   });
   return textStream;
 }
@@ -115,6 +119,7 @@ export function describeImage(data: string) {
         ],
       },
     ],
+    experimental_transform: smoothStream(),
   });
 
   return textStream;
@@ -139,11 +144,12 @@ export function queryPDF(
             type: "file",
             data: attachment,
             filename: attachmentName,
-            mimeType: "application/pdf",
+            mediaType: "application/pdf",
           },
         ],
       },
     ],
+    experimental_transform: smoothStream(),
   });
 
   return textStream;
@@ -151,21 +157,22 @@ export function queryPDF(
 
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 
-export function toolCalling(messages: Message[]) {
+export function toolCalling(messages: UIMessage[]) {
   const result = streamText({
     model,
-    messages,
+    messages: convertToModelMessages(messages),
     tools: {
-      getCurrentWeather: tool({
+      getCurrentWeather: {
         description:
           "Get comprehensive weather and air quality data for any location. Returns detailed information including: location details (name, region, country, coordinates, timezone), current weather conditions (temperature in °C/°F, weather condition, humidity %, cloud coverage %), wind data (speed, direction, gusts), atmospheric pressure, precipitation, visibility, UV index, feels-like/windchill/heat index temperatures, dewpoint, and complete air quality measurements (CO, NO2, O3, SO2, PM2.5, PM10 levels plus US EPA and UK DEFRA air quality indices).",
-        parameters: z.object({
+        inputSchema: z.object({
           location: z
             .string()
             .describe(
               "Pass US Zipcode, UK Postcode, Canada Postalcode, IP address, Latitude/Longitude (decimal degree) or city name."
             ),
         }),
+        
         execute: async ({ location }) => {
           const response = await fetch(
             `http://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${location}&aqi=yes`
@@ -173,14 +180,10 @@ export function toolCalling(messages: Message[]) {
           const weatherData = await response.json();
           return weatherData; // Return the weather data directly
         },
-      }),
+      },
     },
-    experimental_transform: smoothStream({
-      delayInMs: 20,
-      chunking: "word",
-    }),
-
-    maxSteps: 10,
+    experimental_transform: smoothStream(),
+    stopWhen: stepCountIs(5),
   });
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }

@@ -12,7 +12,6 @@ export default function QueryPDF() {
 	const [attachmentSrc, setAttachmentSrc] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const handleClick = () => {
-    console.log("Button clicked");
 		fileInputRef.current!.value = ""; // Reset the input value to allow re-uploading the same file
 		setAttachmentName(null);
 		setAttachmentSrc(null);

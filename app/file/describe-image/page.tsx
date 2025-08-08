@@ -10,7 +10,6 @@ export default function StreamText() {
   const [processing, setProcessing] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const handleClick = () => {
-    console.log("Button clicked");
     fileInputRef.current?.click();
   };
 
@@ -57,10 +56,6 @@ export default function StreamText() {
                   };
                   while (true) {
                     const { done, value } = await reader.read();
-                    console.log(
-                      "Received chunk:",
-                      new TextDecoder().decode(value)
-                    );
                     if (done) break;
                     aiResponse.content += new TextDecoder().decode(value);
                   }

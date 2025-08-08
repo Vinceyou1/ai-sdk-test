@@ -14,6 +14,7 @@ export function MessageList({ messages }: { messages: CoreMessage[] }) {
             message.role == "assistant" && "mr-8 rounded-bl-none"
           )}
         >
+          <strong>{`${message.role}: `}</strong>
           <Markdown>{message.content as string}</Markdown>
         </div>
       ))}
