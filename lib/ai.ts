@@ -137,8 +137,8 @@ export function queryPDF(
           },
           {
             type: "file",
-            data: attachment, // Assuming 'attachment' is a base64 encoded string of the image
-            filename: "document.pdf",
+            data: attachment,
+            filename: attachmentName,
             mimeType: "application/pdf",
           },
         ],

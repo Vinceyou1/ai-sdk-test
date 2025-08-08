@@ -18,7 +18,7 @@ export default function StreamText() {
         />
         <button
           onClick={async () => {
-            let messagesCopy = [...messages];
+            const messagesCopy = [...messages];
             const textarea = document.getElementById(
               "user-input"
             ) as HTMLTextAreaElement;
@@ -37,7 +37,7 @@ export default function StreamText() {
             }).then(async (response) => {
               if (response.body) {
                 const reader = response.body.getReader();
-                let aiResponse: CoreMessage = {
+                const aiResponse: CoreMessage = {
                   role: "assistant",
                   content: "",
                 };

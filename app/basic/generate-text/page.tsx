@@ -18,7 +18,7 @@ export default function GenerateText() {
         />
         <button
           onClick={async () => {
-            let messagesCopy = [...messages];
+            const messagesCopy = [...messages];
             const textarea = document.getElementById(
               "user-input"
             ) as HTMLTextAreaElement;
@@ -43,7 +43,7 @@ export default function GenerateText() {
                   if (done) break;
                   aiContent += new TextDecoder().decode(value);
                 }
-                let aiResponse: CoreMessage = {
+                const aiResponse: CoreMessage = {
                   role: "assistant",
                   content: aiContent,
                 };

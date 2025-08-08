@@ -1,7 +1,7 @@
 import { callStreamTextWithHistory } from "@/lib/ai";
 import { CoreMessage } from "ai";
 
-function isCoreMessageArray(data: any): data is CoreMessage[] {
+function isCoreMessageArray(data: object): data is CoreMessage[] {
   return (
     Array.isArray(data) &&
     data.every(

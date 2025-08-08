@@ -1,11 +1,10 @@
 "use client";
 
-import { CoreMessage } from "ai";
 import { ArrowBendRightUpIcon } from "@phosphor-icons/react";
 import Markdown from "markdown-to-jsx";
 import { cn } from "@/lib/utils";
 import { useChat } from "@ai-sdk/react";
-import { ToolInvocation, ToolInvocationUIPart } from "@ai-sdk/ui-utils";
+import { ToolInvocation } from "@ai-sdk/ui-utils";
 import { Weather } from "@/components/weather";
 
 export default function ToolCalling() {
@@ -16,7 +15,7 @@ export default function ToolCalling() {
     <div className="text-gray-400 flex-grow flex flex-col items-center justify-between">
       <div className="flex flex-col w-1/2 p-4 gap-4">
         {messages.map((message, index) => {
-          let weatherToolCalls: ToolInvocation[] = [];
+          const weatherToolCalls: ToolInvocation[] = [];
           message.parts.forEach((part) => {
             if (part.type === "tool-invocation") {
               weatherToolCalls.push(part.toolInvocation);
@@ -32,8 +31,7 @@ export default function ToolCalling() {
               )}
             >
               {weatherToolCalls.map((toolInvocation) => {
-                const { state, toolName, toolCallId } = toolInvocation;
-
+                const { state, toolCallId } = toolInvocation;
                 if (state === "result") {
 									const { result } = toolInvocation;
 									return (
@@ -75,73 +73,6 @@ export default function ToolCalling() {
               "user-input"
             ) as HTMLTextAreaElement;
             textarea.value = "";
-            // let messagesCopy = [...messages];
-            // const textarea = document.getElementById(
-            //   "user-input"
-            // ) as HTMLTextAreaElement;
-            // const content = textarea.value;
-            // if (!content || content == "") return;
-            // textarea.value = "";
-            // const userMessage: CoreMessage = {
-            //   role: "user",
-            //   content: content,
-            // };
-            // messagesCopy.push(userMessage);
-            // setMessages([...messagesCopy]);
-            // fetch("/api/tool-calling", {
-            //   method: "POST",
-            //   body: content,
-            // }).then(async (response) => {
-            //   if (response.body) {
-            //     const reader = response.body.getReader();
-            //     const decoder = new TextDecoder();
-            // 		let aiResponse: CoreMessage = {
-            // 			role: "assistant",
-            // 			content: "",
-            // 		};
-            //     try {
-            //       while (true) {
-            //         const { done, value } = await reader.read();
-            //         if (done) break;
-
-            //         const chunk = decoder.decode(value);
-            //         const lines = chunk
-            //           .split("\n")
-            //           .filter((line) => line.trim());
-
-            //         for (const line of lines) {
-            //           try {
-            //             const parsed = JSON.parse(line);
-            //             if (parsed.type === "text") {
-            //               console.log("Text stream:", parsed.data);
-            //               aiResponse.content += parsed.data;
-            // 							setMessages([...messagesCopy, aiResponse]);
-            //             } else if (parsed.type === "tool-result") {
-            //               console.log("Tool result:", parsed.data);
-            // 							const toolResult: CoreMessage = {
-            // 								role: "tool",
-            // 								content: [
-            // 									{
-            // 										type: "tool-result",
-            // 										toolName: parsed.data.toolName,
-            // 										toolCallId: parsed.data.toolCallId,
-            // 										result: parsed.data.result,
-            // 									}
-            // 								]
-            // 							};
-            // 							messagesCopy.push(toolResult);
-            // 							setMessages([...messagesCopy]);
-            //             }
-            //           } catch (e) {
-            //             console.error("Failed to parse line:", line);
-            //           }
-            //         }
-            //       }
-            //     } finally {
-            //       reader.releaseLock();
-            //     }
-            //   }
-            // });
           }}
           className="rounded-full outline-1 hover:outline-2 p-2 cursor-pointer text-gray-400 outline-gray-700"
         >

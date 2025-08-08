@@ -1,10 +1,8 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { CoreMessage } from "ai";
 import { useState } from "react";
 import { ArrowBendRightUpIcon } from "@phosphor-icons/react";
-import Markdown from "markdown-to-jsx";
 import { MessageList } from "@/components/message-list";
 
 export default function StreamText() {
@@ -20,7 +18,7 @@ export default function StreamText() {
         />
         <button
           onClick={async () => {
-            let messagesCopy = [...messages];
+            const messagesCopy = [...messages];
             const textarea = document.getElementById(
               "user-input"
             ) as HTMLTextAreaElement;
@@ -39,7 +37,7 @@ export default function StreamText() {
             }).then(async (response) => {
               if (response.body) {
                 const reader = response.body.getReader();
-                let aiResponse: CoreMessage = {
+                const aiResponse: CoreMessage = {
                   role: "assistant",
                   content: "",
                 };

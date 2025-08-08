@@ -51,7 +51,7 @@ export default function StreamText() {
               }).then(async (response) => {
                 if (response.body) {
                   const reader = response.body.getReader();
-                  let aiResponse: CoreMessage = {
+                  const aiResponse: CoreMessage = {
                     role: "assistant",
                     content: "",
                   };

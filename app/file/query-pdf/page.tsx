@@ -50,7 +50,6 @@ export default function QueryPDF() {
               const reader = new FileReader();
               reader.onloadend = () => {
                 const base64String = reader.result as string;
-                const messagesCopy = [...messages];
 								setAttachmentName(file.name);
 								setAttachmentSrc(base64String);
               };
@@ -73,7 +72,7 @@ export default function QueryPDF() {
         />
         <button
           onClick={async () => {
-            let messagesCopy = [...messages];
+            const messagesCopy = [...messages];
             const textarea = document.getElementById(
               "user-input"
             ) as HTMLTextAreaElement;
@@ -99,7 +98,7 @@ export default function QueryPDF() {
             }).then(async (response) => {
               if (response.body) {
                 const reader = response.body.getReader();
-                let aiResponse: CoreMessage = {
+                const aiResponse: CoreMessage = {
                   role: "assistant",
                   content: "",
                 };

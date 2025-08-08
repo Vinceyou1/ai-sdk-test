@@ -8,7 +8,7 @@ export default function Home() {
         <p className="mt-4">
           This is a simple application to test the AI SDK integration.
         </p>
-        <p>If you're running this locally, make sure to obtain an API key for Google Gemini.</p>
+        <p>If you&apos;re running this locally, make sure to obtain an API key for Google Gemini.</p>
       </div>
     </div>
   );
